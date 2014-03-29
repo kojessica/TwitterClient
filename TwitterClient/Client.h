@@ -10,4 +10,10 @@
 
 @interface Client : BDBOAuth1RequestOperationManager
 
++ (Client *)instance;
+- (void) login;
+- (void) logout;
+- (AFHTTPRequestOperation *)homeTimelineWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure;
+- (AFHTTPRequestOperation *)currentUserWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id response))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
 @end

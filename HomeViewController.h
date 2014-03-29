@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeViewController : UIViewController
+extern NSString *const didTweet;
+
+@interface HomeViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+
+- (IBAction)onLogOutButton:(id)sender;
+- (IBAction)onNewButton:(id)sender;
 
 @end

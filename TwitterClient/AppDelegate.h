@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@interface NSURL(dictionaryFromQueryString)
+
+- (NSDictionary *)dictionaryFromQueryString;
+
+@end
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+- (NSDictionary *)dictionaryFromQueryString;
 
 @end

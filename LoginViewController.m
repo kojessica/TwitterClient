@@ -7,8 +7,11 @@
 //
 
 #import "LoginViewController.h"
+#import "Client.h"
 
 @interface LoginViewController ()
+
+- (IBAction)OnLoginButton:(id)sender;
 
 @end
 
@@ -18,7 +21,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -35,4 +37,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)OnLoginButton:(id)sender {
+    [[Client instance] login];
+}
 @end
