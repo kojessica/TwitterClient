@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Tweet.h"
 
 @interface TweetCell : UICollectionViewCell
+
+@property (weak, nonatomic) IBOutlet UILabel *tName;
+@property (weak, nonatomic) IBOutlet UIImageView *tImage;
+@property (weak, nonatomic) IBOutlet UILabel *tContent;
+@property (weak, nonatomic) IBOutlet UILabel *tScreenName;
+- (id)cellWithTweet:(NSDictionary *)tweet;
 
 @end

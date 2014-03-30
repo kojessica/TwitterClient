@@ -93,11 +93,12 @@ static int maximumNumCharacters = 140;
 - (IBAction)onTweetButton:(id)sender {
     if (self.textView.text.length > 0) {
         HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+        home.theNewTweet = self.textView.text;
         NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
         [vcs insertObject:home atIndex:[vcs count]-1];
         [self.navigationController setViewControllers:vcs animated:NO];
         [self.navigationController popViewControllerAnimated:YES];
-        
+
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
         hud.mode = MBProgressHUDModeText;
         hud.labelText = @"Tweeting...";
@@ -106,9 +107,9 @@ static int maximumNumCharacters = 140;
         hud.removeFromSuperViewOnHide = YES;
         [hud hide:YES afterDelay:3];
         
-        NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+        /*NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
         [userInfo setObject:self.textView.text forKey:@"new_tweet"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:didTweet object:self userInfo:userInfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:didTweet object:self userInfo:userInfo];*/
 
     }
 }

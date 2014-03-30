@@ -14,8 +14,35 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        NSArray *arrayOfViews = [[NSBundle mainBundle] loadNibNamed:@"TweetCell" owner:self options:nil];
+        
+        if ([arrayOfViews count] < 1) {
+            return nil;
+        }
+        if (![[arrayOfViews objectAtIndex:0] isKindOfClass:[UICollectionViewCell class]]) {
+            return nil;
+        }
+        self = [arrayOfViews objectAtIndex:0];
     }
+    return self;
+}
+
+- (id)cellWithTweet:(NSDictionary *)tweet
+{
+    self.tContent.text = [tweet objectForKey:@"text"];
+    self.tName.text = [[tweet objectForKey:@"user"] objectForKey:@"name"];
+    [self.tScreenName setText:[NSString stringWithFormat: @"@%@", [[tweet objectForKey:@"user"] objectForKey:@"screen_name"]]];
+    
+    NSURL *url = [NSURL URLWithString:[[tweet objectForKey:@"user"] objectForKey:@"profile_image_url"]];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSData *imageData = [NSData dataWithContentsOfURL:url];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tImage.image = [UIImage imageWithData:imageData];
+        });
+    });
+    self.tContent.numberOfLines = 0;
+    [self.tContent sizeToFit];
     return self;
 }
 

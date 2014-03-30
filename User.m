@@ -31,7 +31,7 @@ static User *currentUser = nil;
         NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         if (dictionary) {
             currentUser = [[User alloc] initWithDictionary:dictionary];
-            NSLog(@"%@", dictionary);
+            //NSLog(@"%@", dictionary);
         }
     }
     return currentUser;

@@ -12,6 +12,11 @@
 NSString * const twitterConsumerKey = @"hEfuuotJxxbFCGR4WSqVZMYVS";
 NSString * const twitterConsumerSecret = @"2rxJ0Dh76LhSO2kzewYGANp8G4VjysPk5nmRc0EasBQKixghWA";
 
+/*
+NSString * const twitterConsumerKey = @"OaGBrR0bQX6cVutGvarAEY0bR";
+NSString * const twitterConsumerSecret = @"WeHKYymLtobMkuFUMvWp0zFODJmigwDGj0xaalgLoZtHw2qbEW";
+*/
+
 @implementation Client
 
 + (Client *)instance {

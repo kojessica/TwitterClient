@@ -93,12 +93,6 @@
                 [client fetchAccessTokenWithPath:@"/oauth/access_token" method:@"POST" requestToken:[BDBOAuthToken tokenWithQueryString:url.query] success:^(BDBOAuthToken *accessToken) {
                     
                     [client.requestSerializer saveAccessToken:accessToken];
-                    [client homeTimelineWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-                        self.window.rootViewController = [[HomeViewController alloc] init];
-                        //NSLog(@"response: %@", responseObject);
-                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                        NSLog(@"%@", error);
-                    }];
                     
                     [client currentUserWithSuccess:^(AFHTTPRequestOperation *operation, id response) {
                         //NSLog(@"response: %@", response);

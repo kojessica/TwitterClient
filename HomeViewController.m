@@ -9,14 +9,18 @@
 #import "HomeViewController.h"
 #import "Client.h"
 #import "NewTweetViewController.h"
+#import "TweetCell.h"
+#import "MBProgressHUD.h"
+#import "DetailViewController.h"
+#import "Tweet.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UICollectionView *tweets;
+-(void)reload;
 
 @end
-
-NSString * const didTweet = @"didTweet";
 
 @implementation HomeViewController
 
@@ -24,7 +28,6 @@ NSString * const didTweet = @"didTweet";
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -34,13 +37,37 @@ NSString * const didTweet = @"didTweet";
     [super viewDidLoad];
     self.tweets.dataSource = self;
     self.tweets.delegate = self;
-    
+    self.currentTweets = [[NSMutableArray alloc] init];
 
     UINib *customNib = [UINib nibWithNibName:@"TweetCell" bundle:nil];
     [self.tweets registerNib:customNib forCellWithReuseIdentifier:@"TweetCell"];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fakeTweet:) name:didTweet object:nil];
+    NSLog(@"%@",  @"ViewDidLoad");
+    
+    [self reload];
+    NSLog(@"%@", self.currentTweets);
+    
+}
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    if (self.theNewTweet) {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *userDict = [[NSMutableDictionary alloc] init];
+        [userDict setValue:@"" forKey:@"name"];
+        [userDict setValue:@"" forKey:@"screen_name"];
+        [userDict setValue:@"" forKey:@"profile_image_url"];
+        [dict setValue:self.theNewTweet forKey:@"text"];
+        [dict setValue:userDict forKey:@"user"];
+        
+        [self.currentTweets insertObject:dict atIndex:0];
+        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [self.tweets insertItemsAtIndexPaths:arrayWithIndexPaths];
+    }
+
+    NSLog(@"%@",  @"ViewDidAppear");
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,7 +78,7 @@ NSString * const didTweet = @"didTweet";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 4;
+    return [self.currentTweets count];
 }
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
@@ -59,15 +86,29 @@ NSString * const didTweet = @"didTweet";
     return 1;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    DetailViewController *detailview = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+    [self.navigationController pushViewController:detailview animated:YES];
+}
+
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return CGSizeMake(300, 50);
+    NSString *name = [self.currentTweets objectAtIndex:indexPath.row][@"text"];
+    CGSize maximumLabelSize = CGSizeMake(215,9999);
+    UIFont *font=[UIFont systemFontOfSize:13];
+    CGRect textRect = [name  boundingRectWithSize:maximumLabelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
+    return CGSizeMake(320, textRect.size.height + 40);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TweetCell" forIndexPath:indexPath];
-   
+    TweetCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TweetCell" forIndexPath:indexPath];
+    
+    //NSLog(@"%@", [[self.currentTweets objectAtIndex:indexPath.row] objectForKey:@"text"]);
+    NSDictionary *twt = [self.currentTweets objectAtIndex:indexPath.row];
+    [cell cellWithTweet:twt];
+    cell.tContent.numberOfLines = 0;
+    [cell.tContent sizeToFit];
     return cell;
 }
 
@@ -83,7 +124,24 @@ NSString * const didTweet = @"didTweet";
 }
 
 - (void)fakeTweet:(NSNotification *)notification {
-    NSLog(@"%@",  [notification.userInfo objectForKey:@"new_tweet"]);
+    /*NSString *newTweet = [notification.userInfo objectForKey:@"new_tweet"];
+    if (newTweet) {
+        [self.currentTweets insertObject:newTweet atIndex:0];
+        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [self.tweets insertItemsAtIndexPaths:arrayWithIndexPaths];
+    }*/
+}
+
+- (void) reload {
+    Client *client = [Client instance];
+    [client homeTimelineWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.currentTweets = [Tweet tweetsWithArray:responseObject];
+        [self.tweets reloadData];
+        //NSLog(@"response: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", error);
+    }];
 }
 
 @end
