@@ -29,7 +29,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.tContent.text = [self.tweet objectForKey:@"text"];
+    [self.tName setText:[NSString stringWithFormat: @"@%@", [[self.tweet objectForKey:@"user"] objectForKey:@"name"]]];
+    [self.tScreenName setText:[NSString stringWithFormat: @"@%@", [[self.tweet objectForKey:@"user"] objectForKey:@"screen_name"]]];
+    
+    NSURL *url = [NSURL URLWithString:[[self.tweet objectForKey:@"user"] objectForKey:@"profile_image_url"]];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSData *imageData = [NSData dataWithContentsOfURL:url];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tImage.image = [UIImage imageWithData:imageData];
+        });
+    });
+    self.tContent.numberOfLines = 0;
+    [self.tContent sizeToFit];
+
 }
 
 - (void)didReceiveMemoryWarning

@@ -14,6 +14,7 @@
 #import "DetailViewController.h"
 #import "Tweet.h"
 #import <QuartzCore/QuartzCore.h>
+#import "User.h"
 
 @interface HomeViewController ()
 
@@ -55,9 +56,10 @@
     if (self.theNewTweet) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *userDict = [[NSMutableDictionary alloc] init];
-        [userDict setValue:@"" forKey:@"name"];
-        [userDict setValue:@"" forKey:@"screen_name"];
-        [userDict setValue:@"" forKey:@"profile_image_url"];
+        NSDictionary *currentUser = [User currentUserDictionary];
+        [userDict setValue:[currentUser objectForKey:@"name"] forKey:@"name"];
+        [userDict setValue:[currentUser objectForKey:@"screen_name"] forKey:@"screen_name"];
+        [userDict setValue:[currentUser objectForKey:@"profile_image_url"] forKey:@"profile_image_url"];
         [dict setValue:self.theNewTweet forKey:@"text"];
         [dict setValue:userDict forKey:@"user"];
         
@@ -88,6 +90,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     DetailViewController *detailview = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+    detailview.tweet = [self.currentTweets objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:detailview animated:YES];
 }
 

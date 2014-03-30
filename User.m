@@ -37,6 +37,12 @@ static User *currentUser = nil;
     return currentUser;
 }
 
++ (NSDictionary *)currentUserDictionary {
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:@"current_user"];
+    NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    return dictionary;
+}
+
 + (void)setCurrentUser:(User *)user {
     if (user) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSKeyedArchiver archivedDataWithRootObject:user.data] forKey:@"current_user"];
