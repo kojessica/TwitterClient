@@ -55,4 +55,16 @@ NSString * const twitterConsumerSecret = @"WeHKYymLtobMkuFUMvWp0zFODJmigwDGj0xaa
     return [self GET:@"1.1/statuses/home_timeline.json" parameters:nil success:success failure:failure];
 }
 
+- (AFHTTPRequestOperation *)favoriteTweetWithSuccess:(NSDictionary *)param
+                                             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))
+success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure{
+    return [self POST:@"1.1/favorites/create.json" parameters:param success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)destoryFavoriteTweetWithSuccess:(NSDictionary *)param
+                                             success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))
+success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure{
+    return [self POST:@"1.1/favorites/destroy.json" parameters:param success:success failure:failure];
+}
+
 @end

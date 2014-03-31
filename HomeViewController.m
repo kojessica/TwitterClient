@@ -115,8 +115,16 @@
     [cell cellWithTweet:twt];
     cell.tContent.numberOfLines = 0;
     [cell.tContent sizeToFit];
+
+    BOOL favorited = [[[self.currentTweets objectAtIndex:indexPath.row] objectForKey:@"favorited"] boolValue];
+    if (favorited) {
+        [cell.favoriteButton setImage:[UIImage imageNamed:@"ic_star_yellow_8.png"] forState:UIControlStateNormal];
+    } else {
+        [cell.favoriteButton setImage:[UIImage imageNamed:@"ic_star_outline_grey_8.png"] forState:UIControlStateNormal];
+    }
     
-    [cell.favoriteButton addTarget:self action:@selector(onFavoriteButton) forControlEvents:UIControlEventAllTouchEvents];
+    cell.favoriteButton.tag = indexPath.row;
+    [cell.favoriteButton addTarget:self action:@selector(onFavoriteButton:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -132,16 +140,6 @@
     [self.navigationController pushViewController:editor animated:YES];
 }
 
-- (void)fakeTweet:(NSNotification *)notification {
-    /*NSString *newTweet = [notification.userInfo objectForKey:@"new_tweet"];
-    if (newTweet) {
-        [self.currentTweets insertObject:newTweet atIndex:0];
-        NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
-        [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
-        [self.tweets insertItemsAtIndexPaths:arrayWithIndexPaths];
-    }*/
-}
-
 - (void) reload {
     Client *client = [Client instance];
     [client homeTimelineWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -153,8 +151,26 @@
     }];
 }
 
-- (void) onFavoriteButton {
+- (void) onFavoriteButton:(id)sender {
+    NSInteger tid = ((UIControl *) sender).tag;
+    //NSLog(@"%d", tid);
     
+    BOOL favorited = [[[self.currentTweets objectAtIndex:tid] objectForKey:@"favorited"] boolValue];
+    NSString *tId = [[self.currentTweets objectAtIndex:tid] objectForKey:@"id"];
+    NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:tId, @"id", nil];
+    Client *client = [Client instance];
+    
+    if (favorited) {
+        [sender setImage:[UIImage imageNamed:@"ic_star_outline_grey_8.png"] forState:UIControlStateNormal];
+        [client destoryFavoriteTweetWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+    } else {
+        [sender setImage:[UIImage imageNamed:@"ic_star_yellow_8.png"] forState:UIControlStateNormal];
+        [client favoriteTweetWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+    }
 }
 
 @end
