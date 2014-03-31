@@ -24,7 +24,7 @@
                             <rect key="frame" x="20" y="33" width="48" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                            <state key="normal" title="Cancel">
+                            <state key="normal" title="Home">
                                 <color key="titleColor" red="0.1411764771" green="0.25098040700000002" blue="0.2941176593" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>

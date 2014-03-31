@@ -9,6 +9,7 @@
 #import "NewTweetViewController.h"
 #import "HomeViewController.h"
 #import "MBProgressHUD.h"
+#import "Client.h"
 
 @interface NewTweetViewController ()
 
@@ -36,6 +37,10 @@ static int maximumNumCharacters = 140;
 {
     [super viewDidLoad];
     self.textView.delegate = self;
+    NSLog(@"%@", self.replyTo);
+    if ([self.replyTo length] > 0) {
+        self.textView.text = [NSString stringWithFormat:@"@%@ ", self.replyTo];
+    }
     [self.textView becomeFirstResponder];
     // Do any additional setup after loading the view from its nib.
 }
@@ -92,8 +97,15 @@ static int maximumNumCharacters = 140;
 
 - (IBAction)onTweetButton:(id)sender {
     if (self.textView.text.length > 0) {
+        Client *client = [Client instance];
+        NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:self.textView.text, @"status", nil];
+        [client tweetWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+        
         HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
         home.theNewTweet = self.textView.text;
+        home.currentTweets = self.savedTweets;
         NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
         [vcs insertObject:home atIndex:[vcs count]-1];
         [self.navigationController setViewControllers:vcs animated:NO];

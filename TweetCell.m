@@ -33,14 +33,16 @@
     self.tContent.text = [tweet objectForKey:@"text"];
     self.tName.text = [[tweet objectForKey:@"user"] objectForKey:@"name"];
     [self.tScreenName setText:[NSString stringWithFormat: @"@%@", [[tweet objectForKey:@"user"] objectForKey:@"screen_name"]]];
-    self.tTime.text = [tweet objectForKey:@"created_at"];
     
-    //Format time
-    NSDate *date = [Timestamp dateWithJSONString:[tweet objectForKey:@"created_at"]];
-    NSString *formattedDate = [Timestamp relativeTimeWithTimestamp:date];
-    
-    self.tTime.text = formattedDate;
-
+    if ([[tweet objectForKey:@"created_at"] length] != 0) {
+        //self.tTime.text = [tweet objectForKey:@"created_at"];
+        //Format time
+        NSDate *date = [Timestamp dateWithJSONString:[tweet objectForKey:@"created_at"]];
+        NSString *formattedDate = [Timestamp relativeTimeWithTimestamp:date];
+        self.tTime.text = formattedDate;
+    } else {
+        self.tTime.text = @"0m";
+    }
     
     NSURL *url = [NSURL URLWithString:[[tweet objectForKey:@"user"] objectForKey:@"profile_image_url"]];
     

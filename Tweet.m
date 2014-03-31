@@ -19,8 +19,8 @@
 
 + (NSMutableArray *)tweetsWithArray:(NSArray *)array {
     NSMutableArray *tweets = [[NSMutableArray alloc] initWithCapacity:array.count];
-    for (NSDictionary *params in array) {
-        [tweets addObject:[[NSDictionary alloc] initWithDictionary:params]];
+    for (NSMutableDictionary *params in array) {
+        [tweets addObject:[[NSMutableDictionary alloc] initWithDictionary:params]];
     }
     return tweets;
 }

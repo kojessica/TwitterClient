@@ -19,6 +19,6 @@
 - (id)cellWithTweet:(NSDictionary *)tweet;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIButton *reTweetButton;
-@property (weak, nonatomic) IBOutlet UIButton *replayButton;
+@property (weak, nonatomic) IBOutlet UIButton *replyButton;
 
 @end

@@ -20,7 +20,9 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *tweets;
 -(void)reload;
--(void)onFavoriteButton;
+-(void) onFavoriteButton:(id)sender;
+-(void) onRetweetButton:(id)sender;
+-(void) onReplyButton:(id)sender;
 @end
 
 @implementation HomeViewController
@@ -38,7 +40,6 @@
     [super viewDidLoad];
     self.tweets.dataSource = self;
     self.tweets.delegate = self;
-    self.currentTweets = [[NSMutableArray alloc] init];
 
     UINib *customNib = [UINib nibWithNibName:@"TweetCell" bundle:nil];
     [self.tweets registerNib:customNib forCellWithReuseIdentifier:@"TweetCell"];
@@ -48,7 +49,6 @@
     [refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     [self.tweets addSubview:refreshControl];
     
-    [self reload];
     NSLog(@"%@", self.currentTweets);
     
 }
@@ -62,6 +62,8 @@
         NSDictionary *currentUser = [User currentUserDictionary];
         [userDict setValue:[currentUser objectForKey:@"name"] forKey:@"name"];
         [userDict setValue:[currentUser objectForKey:@"screen_name"] forKey:@"screen_name"];
+
+        [userDict setValue:@"" forKey:@"created_at"];
         [userDict setValue:[currentUser objectForKey:@"profile_image_url"] forKey:@"profile_image_url"];
         [dict setValue:self.theNewTweet forKey:@"text"];
         [dict setValue:userDict forKey:@"user"];
@@ -70,8 +72,10 @@
         NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
         [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
         [self.tweets insertItemsAtIndexPaths:arrayWithIndexPaths];
+        [self.tweets reloadData];
+    } else {
+        [self reload];
     }
-
     //NSLog(@"%@",  @"ViewDidAppear");
 }
 
@@ -119,12 +123,22 @@
     BOOL favorited = [[[self.currentTweets objectAtIndex:indexPath.row] objectForKey:@"favorited"] boolValue];
     if (favorited) {
         [cell.favoriteButton setImage:[UIImage imageNamed:@"ic_star_yellow_8.png"] forState:UIControlStateNormal];
-    } else {
-        [cell.favoriteButton setImage:[UIImage imageNamed:@"ic_star_outline_grey_8.png"] forState:UIControlStateNormal];
     }
+
+    BOOL retweeted = [[[self.currentTweets objectAtIndex:indexPath.row] objectForKey:@"retweeted"] boolValue];
+    if (retweeted) {
+        [cell.reTweetButton setTitleColor:[UIColor colorWithRed:244.f/255.f green:180.f/255.f blue:0 alpha:1.f] forState:UIControlStateNormal];
+    }
+    
     
     cell.favoriteButton.tag = indexPath.row;
     [cell.favoriteButton addTarget:self action:@selector(onFavoriteButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    cell.reTweetButton.tag = indexPath.row;
+    [cell.reTweetButton addTarget:self action:@selector(onRetweetButton:) forControlEvents:UIControlEventTouchUpInside];
+
+    cell.replyButton.tag = indexPath.row;
+    [cell.replyButton addTarget:self action:@selector(onReplyButton:) forControlEvents:UIControlEventTouchUpInside];
     
     return cell;
 }
@@ -137,17 +151,21 @@
 - (IBAction)onNewButton:(id)sender {
     NewTweetViewController *editor = [[NewTweetViewController alloc] initWithNibName:@"NewTweetViewController" bundle:nil];
     editor.title = @"New tweet";
+    editor.savedTweets = self.currentTweets;
     [self.navigationController pushViewController:editor animated:YES];
 }
 
 - (void) reload {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     Client *client = [Client instance];
     [client homeTimelineWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.currentTweets = [Tweet tweetsWithArray:responseObject];
         [self.tweets reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
         NSLog(@"response: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
 
@@ -156,8 +174,8 @@
     //NSLog(@"%d", tid);
     
     BOOL favorited = [[[self.currentTweets objectAtIndex:tid] objectForKey:@"favorited"] boolValue];
-    NSString *tId = [[self.currentTweets objectAtIndex:tid] objectForKey:@"id"];
-    NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:tId, @"id", nil];
+    NSString *tweetId = [[self.currentTweets objectAtIndex:tid] objectForKey:@"id"];
+    NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:tweetId, @"id", nil];
     Client *client = [Client instance];
     
     if (favorited) {
@@ -171,6 +189,41 @@
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         }];
     }
+}
+
+- (void) onRetweetButton:(id)sender {
+    NSInteger tid = ((UIControl *) sender).tag;
+    NSString *tweetId = [[self.currentTweets objectAtIndex:tid] objectForKey:@"id"];
+    Client *client = [Client instance];
+    NSString *retwtUrl = [NSString stringWithFormat:@"1.1/statuses/retweet/%@.json", tweetId];
+    
+    BOOL retweeted = [[[self.currentTweets objectAtIndex:tid] objectForKey:@"retweeted"] boolValue];
+    
+    if (retweeted) {
+        /*retwtUrl = [NSString stringWithFormat:@"1.1/statuses/destroy/%@.json", tweetId];
+        [client destoryRetweetWithSuccess:retwtUrl success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"%@", error);
+        }];
+        [sender setTitleColor:[UIColor colorWithRed:213.f/255.f green:213.f/255.f blue:213.f/255.f alpha:1.f] forState:UIControlStateNormal];
+        [[self.currentTweets objectAtIndex:tid] setObject:[NSNumber numberWithBool:NO] forKey:@"retweeted"];*/
+    } else {
+        [client retweetWithSuccess:retwtUrl success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"retweet id: %@", [responseObject objectForKey:@"id_str"]);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+        [sender setTitleColor:[UIColor colorWithRed:244.f/255.f green:180.f/255.f blue:0 alpha:1.f] forState:UIControlStateNormal];
+        [[self.currentTweets objectAtIndex:tid] setObject:[NSNumber numberWithBool:YES] forKey:@"retweeted"];
+    }
+}
+
+- (void) onReplyButton:(id)sender {
+    NSInteger tid = ((UIControl *) sender).tag;
+    NewTweetViewController *editor = [[NewTweetViewController alloc] initWithNibName:@"NewTweetViewController" bundle:nil];
+    editor.title = @"New tweet";
+    editor.replyTo = [[[self.currentTweets objectAtIndex:tid] objectForKey:@"user"] objectForKey:@"screen_name"];
+    editor.savedTweets = self.currentTweets;
+    [self.navigationController pushViewController:editor animated:YES];
 }
 
 @end

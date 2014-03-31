@@ -10,4 +10,7 @@
 
 @interface NewTweetViewController : UIViewController <UITextViewDelegate>
 
+@property (strong, nonatomic) NSMutableArray *savedTweets;
+@property (strong, nonatomic) NSString *replyTo;
+
 @end

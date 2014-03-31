@@ -10,11 +10,19 @@
 
 @interface DetailViewController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *tweet;
+@property (nonatomic, strong) NSMutableDictionary *tweet;
 @property (weak, nonatomic) IBOutlet UIImageView *tImage;
 @property (weak, nonatomic) IBOutlet UILabel *tName;
 @property (weak, nonatomic) IBOutlet UILabel *tScreenName;
 @property (weak, nonatomic) IBOutlet UILabel *tContent;
 @property (weak, nonatomic) IBOutlet UILabel *tTime;
+@property (weak, nonatomic) IBOutlet UILabel *retweetCount;
+@property (weak, nonatomic) IBOutlet UILabel *favoriteCount;
+- (IBAction)onFavoriteButton:(id)sender;
+- (IBAction)onRetweetButton:(id)sender;
+- (IBAction)onReplyButton:(id)sender;
+- (IBAction)onReply:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (weak, nonatomic) IBOutlet UIButton *retweetButton;
 
 @end

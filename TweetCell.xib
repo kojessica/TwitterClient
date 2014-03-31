@@ -107,7 +107,7 @@
             <connections>
                 <outlet property="favoriteButton" destination="Bfp-Pb-Ma2" id="74Z-Kf-w8H"/>
                 <outlet property="reTweetButton" destination="QEj-iY-B5H" id="xEq-8P-rWO"/>
-                <outlet property="replayButton" destination="oBH-rp-HYk" id="9l4-x3-qv5"/>
+                <outlet property="replyButton" destination="oBH-rp-HYk" id="8TT-Ch-u3s"/>
                 <outlet property="tContent" destination="x54-bW-vxT" id="JTd-vn-dPX"/>
                 <outlet property="tImage" destination="CdI-GN-1hA" id="acd-ex-ROG"/>
                 <outlet property="tName" destination="c3d-ZP-mZp" id="1Wo-Ww-L6T"/>
