@@ -15,6 +15,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *tImage;
 @property (weak, nonatomic) IBOutlet UILabel *tContent;
 @property (weak, nonatomic) IBOutlet UILabel *tScreenName;
+@property (weak, nonatomic) IBOutlet UILabel *tTime;
 - (id)cellWithTweet:(NSDictionary *)tweet;
+@property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (weak, nonatomic) IBOutlet UIButton *reTweetButton;
+@property (weak, nonatomic) IBOutlet UIButton *replayButton;
 
 @end

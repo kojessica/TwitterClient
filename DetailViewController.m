@@ -8,6 +8,7 @@
 
 #import "DetailViewController.h"
 #import "HomeViewController.h"
+#import "Timestamp.h"
 
 @interface DetailViewController ()
 
@@ -30,8 +31,12 @@
 {
     [super viewDidLoad];
     self.tContent.text = [self.tweet objectForKey:@"text"];
-    [self.tName setText:[NSString stringWithFormat: @"@%@", [[self.tweet objectForKey:@"user"] objectForKey:@"name"]]];
+    [self.tName setText:[NSString stringWithFormat: @"%@", [[self.tweet objectForKey:@"user"] objectForKey:@"name"]]];
     [self.tScreenName setText:[NSString stringWithFormat: @"@%@", [[self.tweet objectForKey:@"user"] objectForKey:@"screen_name"]]];
+    
+    NSString *formattedDate = [Timestamp formattedDateWithJSONString:[self.tweet objectForKey:@"created_at"]];
+    
+    self.tTime.text = formattedDate;
     
     NSURL *url = [NSURL URLWithString:[[self.tweet objectForKey:@"user"] objectForKey:@"profile_image_url"]];
     

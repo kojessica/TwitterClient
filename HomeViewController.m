@@ -20,7 +20,7 @@
 
 @property (weak, nonatomic) IBOutlet UICollectionView *tweets;
 -(void)reload;
-
+-(void)onFavoriteButton;
 @end
 
 @implementation HomeViewController
@@ -43,7 +43,10 @@
     UINib *customNib = [UINib nibWithNibName:@"TweetCell" bundle:nil];
     [self.tweets registerNib:customNib forCellWithReuseIdentifier:@"TweetCell"];
     
-    NSLog(@"%@",  @"ViewDidLoad");
+    //NSLog(@"%@",  @"ViewDidLoad");
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
+    [self.tweets addSubview:refreshControl];
     
     [self reload];
     NSLog(@"%@", self.currentTweets);
@@ -69,7 +72,7 @@
         [self.tweets insertItemsAtIndexPaths:arrayWithIndexPaths];
     }
 
-    NSLog(@"%@",  @"ViewDidAppear");
+    //NSLog(@"%@",  @"ViewDidAppear");
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,7 +103,7 @@
     CGSize maximumLabelSize = CGSizeMake(215,9999);
     UIFont *font=[UIFont systemFontOfSize:13];
     CGRect textRect = [name  boundingRectWithSize:maximumLabelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
-    return CGSizeMake(320, textRect.size.height + 40);
+    return CGSizeMake(320, textRect.size.height + 65);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -112,6 +115,9 @@
     [cell cellWithTweet:twt];
     cell.tContent.numberOfLines = 0;
     [cell.tContent sizeToFit];
+    
+    [cell.favoriteButton addTarget:self action:@selector(onFavoriteButton) forControlEvents:UIControlEventAllTouchEvents];
+    
     return cell;
 }
 
@@ -141,10 +147,14 @@
     [client homeTimelineWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         self.currentTweets = [Tweet tweetsWithArray:responseObject];
         [self.tweets reloadData];
-        //NSLog(@"response: %@", responseObject);
+        NSLog(@"response: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
     }];
+}
+
+- (void) onFavoriteButton {
+    
 }
 
 @end

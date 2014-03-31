@@ -49,25 +49,71 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="timestamp" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="75J-EJ-dnw">
+                        <rect key="frame" x="238" y="14" width="64" height="19"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cyan="0.035126268859999997" magenta="0.024322867389999999" yellow="0.016205072399999999" black="0.12611199819999999" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bfp-Pb-Ma2">
+                        <rect key="frame" x="72" y="209" width="39" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <state key="normal" title="Favorite">
+                            <color key="titleColor" cyan="0.035126268859999997" magenta="0.024322867389999999" yellow="0.016205072399999999" black="0.12611199819999999" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEj-iY-B5H">
+                        <rect key="frame" x="131" y="209" width="46" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <state key="normal" title="Retweet">
+                            <color key="titleColor" cyan="0.035126268859999997" magenta="0.024322867389999999" yellow="0.016205072399999999" black="0.12611199819999999" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBH-rp-HYk">
+                        <rect key="frame" x="194" y="209" width="31" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <state key="normal" title="Reply">
+                            <color key="titleColor" cyan="0.035126268859999997" magenta="0.024322867389999999" yellow="0.016205072399999999" black="0.12611199819999999" alpha="1" colorSpace="custom" customColorSpace="genericCMYKColorSpace"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
             <constraints>
                 <constraint firstItem="CdI-GN-1hA" firstAttribute="top" secondItem="ZxH-Vx-vXw" secondAttribute="top" constant="13" id="1xX-0s-WY3"/>
+                <constraint firstItem="oBH-rp-HYk" firstAttribute="leading" secondItem="QEj-iY-B5H" secondAttribute="trailing" constant="17" id="6tq-g0-JTq"/>
                 <constraint firstItem="c3d-ZP-mZp" firstAttribute="leading" secondItem="CdI-GN-1hA" secondAttribute="trailing" constant="9" id="ChM-Vz-XqG"/>
+                <constraint firstItem="oBH-rp-HYk" firstAttribute="top" secondItem="x54-bW-vxT" secondAttribute="bottom" constant="6" id="Pv2-2O-H8w"/>
+                <constraint firstItem="75J-EJ-dnw" firstAttribute="top" secondItem="ZxH-Vx-vXw" secondAttribute="top" constant="14" id="QSI-76-otG"/>
+                <constraint firstItem="Bfp-Pb-Ma2" firstAttribute="leading" secondItem="ZxH-Vx-vXw" secondAttribute="leading" constant="72" id="SxH-of-i4s"/>
                 <constraint firstItem="CdI-GN-1hA" firstAttribute="leading" secondItem="ZxH-Vx-vXw" secondAttribute="leading" constant="15" id="Vck-DJ-Gfa"/>
                 <constraint firstItem="Smm-6Z-17p" firstAttribute="leading" secondItem="c3d-ZP-mZp" secondAttribute="trailing" constant="8" id="WS0-YX-M3x"/>
+                <constraint firstItem="QEj-iY-B5H" firstAttribute="top" secondItem="x54-bW-vxT" secondAttribute="bottom" constant="6" id="YDz-5k-8WC"/>
                 <constraint firstItem="Smm-6Z-17p" firstAttribute="top" secondItem="ZxH-Vx-vXw" secondAttribute="top" constant="15" id="Z2d-G6-CkF"/>
                 <constraint firstItem="x54-bW-vxT" firstAttribute="leading" secondItem="CdI-GN-1hA" secondAttribute="trailing" constant="9" id="gw5-UI-U57"/>
                 <constraint firstItem="x54-bW-vxT" firstAttribute="top" secondItem="c3d-ZP-mZp" secondAttribute="bottom" constant="8" id="iGk-Y8-Vps"/>
+                <constraint firstItem="QEj-iY-B5H" firstAttribute="leading" secondItem="Bfp-Pb-Ma2" secondAttribute="trailing" constant="20" id="jfR-rx-Hsk"/>
+                <constraint firstAttribute="trailing" secondItem="75J-EJ-dnw" secondAttribute="trailing" constant="20" id="m1T-r5-r7z"/>
+                <constraint firstItem="Bfp-Pb-Ma2" firstAttribute="top" secondItem="x54-bW-vxT" secondAttribute="bottom" constant="6" id="ojV-QU-YdR"/>
                 <constraint firstItem="c3d-ZP-mZp" firstAttribute="top" secondItem="ZxH-Vx-vXw" secondAttribute="top" constant="13" id="v7u-ia-tZg"/>
             </constraints>
             <size key="customSize" width="322" height="243"/>
             <connections>
+                <outlet property="favoriteButton" destination="Bfp-Pb-Ma2" id="74Z-Kf-w8H"/>
+                <outlet property="reTweetButton" destination="QEj-iY-B5H" id="xEq-8P-rWO"/>
+                <outlet property="replayButton" destination="oBH-rp-HYk" id="9l4-x3-qv5"/>
                 <outlet property="tContent" destination="x54-bW-vxT" id="JTd-vn-dPX"/>
                 <outlet property="tImage" destination="CdI-GN-1hA" id="acd-ex-ROG"/>
                 <outlet property="tName" destination="c3d-ZP-mZp" id="1Wo-Ww-L6T"/>
                 <outlet property="tScreenName" destination="Smm-6Z-17p" id="fIV-IJ-GSe"/>
+                <outlet property="tTime" destination="75J-EJ-dnw" id="fT5-Xa-lVY"/>
             </connections>
         </collectionViewCell>
     </objects>
