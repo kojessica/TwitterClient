@@ -19,7 +19,8 @@
 @interface HomeViewController ()
 
 @property (weak, nonatomic) IBOutlet UICollectionView *tweets;
--(void)reload;
+-(void) reload;
+-(void) fetchMoreTweets:(NSString *)max_id;
 -(void) onFavoriteButton:(id)sender;
 -(void) onRetweetButton:(id)sender;
 -(void) onReplyButton:(id)sender;
@@ -56,6 +57,7 @@
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
+    //fake the most recent tweet
     if (self.theNewTweet) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *userDict = [[NSMutableDictionary alloc] init];
@@ -97,6 +99,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     DetailViewController *detailview = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+    detailview.savedTweets = self.currentTweets;
     detailview.tweet = [self.currentTweets objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:detailview animated:YES];
 }
@@ -140,6 +143,10 @@
     cell.replyButton.tag = indexPath.row;
     [cell.replyButton addTarget:self action:@selector(onReplyButton:) forControlEvents:UIControlEventTouchUpInside];
     
+    if (indexPath.row == ([self.currentTweets count] - 1)) {
+        [self fetchMoreTweets:[[self.currentTweets objectAtIndex:([self.currentTweets count] - 1)] objectForKey:@"id"]];
+    }
+    
     return cell;
 }
 
@@ -165,6 +172,29 @@
         NSLog(@"response: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+}
+
+- (void) fetchMoreTweets:(NSString *)max_id {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    Client *client = [Client instance];
+    NSDictionary *param = [[NSDictionary alloc] initWithObjectsAndKeys:max_id, @"max_id", nil];
+    [client nexthomeTimelineWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableArray *newTweets = [Tweet tweetsWithArray:responseObject];
+        
+        [self.tweets performBatchUpdates:^{
+            int resultsSize = [self.currentTweets count];
+            [self.currentTweets addObjectsFromArray:newTweets];
+            for (int i = resultsSize; i < resultsSize + newTweets.count; i++) {
+                 NSMutableArray *arrayWithIndexPaths = [NSMutableArray array];
+                [arrayWithIndexPaths addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+                [self.tweets insertItemsAtIndexPaths:arrayWithIndexPaths];
+            }
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        } completion:nil];
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
 }
@@ -221,6 +251,7 @@
     NSInteger tid = ((UIControl *) sender).tag;
     NewTweetViewController *editor = [[NewTweetViewController alloc] initWithNibName:@"NewTweetViewController" bundle:nil];
     editor.title = @"New tweet";
+    editor.backTo = @"";
     editor.replyTo = [[[self.currentTweets objectAtIndex:tid] objectForKey:@"user"] objectForKey:@"screen_name"];
     editor.savedTweets = self.currentTweets;
     [self.navigationController pushViewController:editor animated:YES];

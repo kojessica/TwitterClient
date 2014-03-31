@@ -8,6 +8,7 @@
 
 #import "NewTweetViewController.h"
 #import "HomeViewController.h"
+#import "DetailViewController.h"
 #import "MBProgressHUD.h"
 #import "Client.h"
 
@@ -88,11 +89,20 @@ static int maximumNumCharacters = 140;
 }
 
 - (IBAction)onCancelButton:(id)sender {
-    HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
-    NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    [vcs insertObject:home atIndex:[vcs count]-1];
-    [self.navigationController setViewControllers:vcs animated:NO];
-    [self.navigationController popViewControllerAnimated:YES];
+    if ([self.backTo isEqualToString:@"detailview"]) {
+        DetailViewController *detail = [[DetailViewController alloc] initWithNibName:@"DetailViewController" bundle:nil];
+        detail.tweet = self.savedTweet;
+        NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+        [vcs insertObject:detail atIndex:[vcs count]-1];
+        [self.navigationController setViewControllers:vcs animated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+        NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
+        [vcs insertObject:home atIndex:[vcs count]-1];
+        [self.navigationController setViewControllers:vcs animated:NO];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (IBAction)onTweetButton:(id)sender {

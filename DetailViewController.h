@@ -24,5 +24,6 @@
 - (IBAction)onReply:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UIButton *retweetButton;
+@property (strong, nonatomic) NSMutableArray *savedTweets;
 
 @end

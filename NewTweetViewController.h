@@ -12,5 +12,7 @@
 
 @property (strong, nonatomic) NSMutableArray *savedTweets;
 @property (strong, nonatomic) NSString *replyTo;
+@property (strong, nonatomic) NSString *backTo;
+@property (strong, nonatomic) NSMutableDictionary *savedTweet;
 
 @end

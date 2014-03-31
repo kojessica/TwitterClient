@@ -136,6 +136,9 @@
 - (void)reply {
     NewTweetViewController *editor = [[NewTweetViewController alloc] initWithNibName:@"NewTweetViewController" bundle:nil];
     editor.title = @"New tweet";
+    editor.backTo = @"detailview";
+    editor.savedTweet = self.tweet;
+    editor.savedTweets = self.savedTweets;
     editor.replyTo = [[self.tweet objectForKey:@"user"] objectForKey:@"screen_name"];
     
     [self.navigationController pushViewController:editor animated:YES];
