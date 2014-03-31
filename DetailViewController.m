@@ -35,8 +35,19 @@
     [super viewDidLoad];
     
     self.tContent.text = [self.tweet objectForKey:@"text"];
-    self.retweetCount.text = [NSString stringWithFormat:@"%@", [self.tweet objectForKey:@"retweet_count"]];
-    self.favoriteCount.text = [NSString stringWithFormat:@"%@", [self.tweet objectForKey:@"favorite_count"]];
+    if ([self.tweet objectForKey:@"retweet_count"]) {
+        self.retweetCount.text = [NSString stringWithFormat:@"%@", [self.tweet objectForKey:@"retweet_count"]];
+    } else {
+        self.retweetCount.text = [NSString stringWithFormat:@"%@", @"0"];
+    }
+    
+    if ([self.tweet objectForKey:@"favorite_count"]) {
+        self.favoriteCount.text = [NSString stringWithFormat:@"%@", [self.tweet objectForKey:@"favorite_count"]];
+    } else {
+        self.favoriteCount.text = [NSString stringWithFormat:@"%@", @"0"];
+    }
+    
+    
     [self.tName setText:[NSString stringWithFormat: @"%@", [[self.tweet objectForKey:@"user"] objectForKey:@"name"]]];
     [self.tScreenName setText:[NSString stringWithFormat: @"@%@", [[self.tweet objectForKey:@"user"] objectForKey:@"screen_name"]]];
 
