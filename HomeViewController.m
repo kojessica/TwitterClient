@@ -107,10 +107,10 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *name = [self.currentTweets objectAtIndex:indexPath.row][@"text"];
-    CGSize maximumLabelSize = CGSizeMake(215,9999);
+    CGSize maximumLabelSize = CGSizeMake(230,9999);
     UIFont *font=[UIFont systemFontOfSize:13];
     CGRect textRect = [name  boundingRectWithSize:maximumLabelSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
-    return CGSizeMake(320, textRect.size.height + 65);
+    return CGSizeMake(320, textRect.size.height + 75);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
