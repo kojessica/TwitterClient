@@ -11,6 +11,8 @@
 #import "Timestamp.h"
 #import "NewTweetViewController.h"
 #import "Client.h"
+#import "LeftNavViewController.h"
+#import "MenuSliderViewController.h"
 
 @interface DetailViewController ()
 
@@ -86,9 +88,12 @@
 }
 
 - (IBAction)onBackButton:(id)sender {
-    HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+    HomeViewController *homeViewController = [[HomeViewController alloc] init];
+    LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
+    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController];
+    
     NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-    [vcs insertObject:home atIndex:[vcs count]-1];
+    [vcs insertObject:slidingMenuContainer atIndex:[vcs count]-1];
     [self.navigationController setViewControllers:vcs animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
     

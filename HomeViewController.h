@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MenuSliderViewController.h"
 
-@interface HomeViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate>
+@interface HomeViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, MenuProtocol>
 
 - (IBAction)onLogOutButton:(id)sender;
 - (IBAction)onNewButton:(id)sender;
 @property (strong, nonatomic) NSString *theNewTweet;
 @property (strong, nonatomic) NSMutableArray *currentTweets;
+- (IBAction)onLeftNavButton:(id)sender;
 
 @end

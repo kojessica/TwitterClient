@@ -15,6 +15,7 @@
 #import "Tweet.h"
 #import <QuartzCore/QuartzCore.h>
 #import "User.h"
+#import "MenuSliderViewController.h"
 
 @interface HomeViewController ()
 
@@ -27,6 +28,8 @@
 @end
 
 @implementation HomeViewController
+
+@synthesize delegate = _delegate;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,11 +44,11 @@
     [super viewDidLoad];
     self.tweets.dataSource = self;
     self.tweets.delegate = self;
-
+    self.delegate = _delegate;
+    
     UINib *customNib = [UINib nibWithNibName:@"TweetCell" bundle:nil];
     [self.tweets registerNib:customNib forCellWithReuseIdentifier:@"TweetCell"];
     
-    //NSLog(@"%@",  @"ViewDidLoad");
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     [self.tweets addSubview:refreshControl];
@@ -78,7 +81,6 @@
     } else {
         [self reload];
     }
-    //NSLog(@"%@",  @"ViewDidAppear");
 }
 
 - (void)didReceiveMemoryWarning
@@ -229,15 +231,7 @@
     
     BOOL retweeted = [[[self.currentTweets objectAtIndex:tid] objectForKey:@"retweeted"] boolValue];
     
-    if (retweeted) {
-        /*retwtUrl = [NSString stringWithFormat:@"1.1/statuses/destroy/%@.json", tweetId];
-        [client destoryRetweetWithSuccess:retwtUrl success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"%@", error);
-        }];
-        [sender setTitleColor:[UIColor colorWithRed:213.f/255.f green:213.f/255.f blue:213.f/255.f alpha:1.f] forState:UIControlStateNormal];
-        [[self.currentTweets objectAtIndex:tid] setObject:[NSNumber numberWithBool:NO] forKey:@"retweeted"];*/
-    } else {
+    if (!retweeted) {
         [client retweetWithSuccess:retwtUrl success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"retweet id: %@", [responseObject objectForKey:@"id_str"]);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -257,4 +251,10 @@
     [self.navigationController pushViewController:editor animated:YES];
 }
 
+- (IBAction)onLeftNavButton:(id)sender {
+    NSLog(@"%d", [self.delegate respondsToSelector:@selector(toggleLeftMenu)]);
+    if ([self.delegate respondsToSelector:@selector(toggleLeftMenu)]) {
+        [self.delegate toggleLeftMenu];
+    }
+}
 @end

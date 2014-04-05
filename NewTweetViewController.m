@@ -11,6 +11,7 @@
 #import "DetailViewController.h"
 #import "MBProgressHUD.h"
 #import "Client.h"
+#import "LeftNavViewController.h"
 
 @interface NewTweetViewController ()
 
@@ -113,11 +114,15 @@ static int maximumNumCharacters = 140;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         }];
         
-        HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
-        home.theNewTweet = self.textView.text;
-        home.currentTweets = self.savedTweets;
+        
+        HomeViewController *homeViewController = [[HomeViewController alloc] init];
+        LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController];
+        
+        homeViewController.theNewTweet = self.textView.text;
+        homeViewController.currentTweets = self.savedTweets;
         NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-        [vcs insertObject:home atIndex:[vcs count]-1];
+        [vcs insertObject:slidingMenuContainer atIndex:[vcs count]-1];
         [self.navigationController setViewControllers:vcs animated:NO];
         [self.navigationController popViewControllerAnimated:YES];
 
@@ -128,11 +133,6 @@ static int maximumNumCharacters = 140;
         hud.yOffset = 150.f;
         hud.removeFromSuperViewOnHide = YES;
         [hud hide:YES afterDelay:3];
-        
-        /*NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
-        [userInfo setObject:self.textView.text forKey:@"new_tweet"];
-        [[NSNotificationCenter defaultCenter] postNotificationName:didTweet object:self userInfo:userInfo];*/
-
     }
 }
 

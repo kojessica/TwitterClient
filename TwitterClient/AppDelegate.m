@@ -11,6 +11,8 @@
 #import "Client.h"
 #import "HomeViewController.h"
 #import "User.h"
+#import "LeftNavViewController.h"
+#import "MenuSliderViewController.h"
 
 @interface AppDelegate ()
 
@@ -47,8 +49,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     
+    HomeViewController *homeViewController = [[HomeViewController alloc] init];
+    LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
+    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController];
+    
+    
     if ([User currentUser]) {
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:slidingMenuContainer];
         self.window.rootViewController = nav;
         nav.navigationBar.hidden = YES;
     } else {
