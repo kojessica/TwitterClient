@@ -13,6 +13,8 @@
 @optional
 
 - (void)toggleLeftMenu;
+- (void)loadProfile;
+- (void)loadHome;
 - (void)resetMenu;
 
 @property (nonatomic,weak) id<MenuProtocol>delegate;
@@ -22,7 +24,6 @@
 
 @interface MenuSliderViewController : UIViewController <MenuProtocol>
 
-- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController
-                        leftViewController:(UIViewController *)leftViewController;
+- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController<MenuProtocol> *)leftViewController profileController:(UIViewController<MenuProtocol> *)profileController;
 
 @end

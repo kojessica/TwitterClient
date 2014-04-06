@@ -53,7 +53,7 @@
     [refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     [self.tweets addSubview:refreshControl];
     
-    NSLog(@"%@", self.currentTweets);
+    //NSLog(@"%@", self.currentTweets);
     
 }
 
@@ -171,7 +171,7 @@
         self.currentTweets = [Tweet tweetsWithArray:responseObject];
         [self.tweets reloadData];
         [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSLog(@"response: %@", responseObject);
+        //NSLog(@"response: %@", responseObject);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -252,7 +252,7 @@
 }
 
 - (IBAction)onLeftNavButton:(id)sender {
-    NSLog(@"%d", [self.delegate respondsToSelector:@selector(toggleLeftMenu)]);
+    //NSLog(@"%d", [self.delegate respondsToSelector:@selector(toggleLeftMenu)]);
     if ([self.delegate respondsToSelector:@selector(toggleLeftMenu)]) {
         [self.delegate toggleLeftMenu];
     }

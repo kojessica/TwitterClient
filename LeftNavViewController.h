@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MenuSliderViewController.h"
 
-@interface LeftNavViewController : UIViewController
+@interface LeftNavViewController : UIViewController<MenuProtocol>
+
+- (IBAction)OnMyProfileLink:(id)sender;
+- (IBAction)OnMyHomeLink:(id)sender;
+- (IBAction)OnSignOutLink:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *fullname;
+@property (weak, nonatomic) IBOutlet UILabel *screenname;
+@property (weak, nonatomic) IBOutlet UIImageView *profileImage;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImage;
 
 @end

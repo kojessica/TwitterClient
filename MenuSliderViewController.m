@@ -7,26 +7,31 @@
 //
 
 #import "MenuSliderViewController.h"
+#import "LeftNavViewController.h"
+#import "MyProfileViewController.h"
+#import "HomeViewController.h"
 
 @interface MenuSliderViewController ()
 
 @property (nonatomic,strong) UIViewController<MenuProtocol> *rootViewController;
-@property (nonatomic,strong) UIViewController *leftViewController;
+@property (nonatomic,strong) UIViewController<MenuProtocol> *leftViewController;
+@property (nonatomic,strong) UIViewController<MenuProtocol> *profileController;
 @property (nonatomic,strong) UIView *overlay;
 @property (nonatomic,assign) BOOL leftViewVisible;
+@property (nonatomic,assign) BOOL profileViewVisible;
 -(void)onTouch:(id)sender;
 
 @end
 
 @implementation MenuSliderViewController
 
-- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController *)leftViewController
-{
+- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController<MenuProtocol> *)leftViewController profileController:(UIViewController<MenuProtocol> *)profileController {
     self = [super init];
     
     if (self) {
         _rootViewController = rootViewController;
         _leftViewController = leftViewController;
+        _profileController = profileController;
         _overlay = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, 0.f, 60.f, self.view.frame.size.height)];
         [_overlay setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:_overlay];
@@ -35,8 +40,7 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view addSubview:self.rootViewController.view];
@@ -46,14 +50,12 @@
     
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (UIView *)leftView
-{
+- (UIView *)leftView {
     if (![self.rootViewController.childViewControllers containsObject:self.leftViewController]) {
         [self.view addSubview:self.leftViewController.view];
         [self addChildViewController:self.leftViewController];
@@ -63,17 +65,29 @@
     return self.leftViewController.view;
 }
 
-- (void)toggleLeftMenu
-{
+- (UIView *)profileView {
+    if (![self.rootViewController.childViewControllers containsObject:self.profileController]) {
+        [self.view addSubview:self.profileController.view];
+        [self addChildViewController:self.profileController];
+        [self.profileController didMoveToParentViewController:self];
+    }
+    
+    return self.profileController.view;
+}
+
+
+- (void)toggleLeftMenu {
 
     NSLog(@"hello");
     
     if (self.leftViewVisible) {
+        self.rootViewController.delegate = self;
         [self resetMenu];
     } else {
+        self.leftViewController.delegate = self;
+        
         [self.view sendSubviewToBack:[self leftView]];
-        
-        
+    
         self.overlay.frame = CGRectMake(self.view.frame.size.width - 60.f, 0.f, 60.f, self.view.frame.size.height);
         
         UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(onTouch:)];
@@ -91,6 +105,7 @@
                          animations:^{
                              CGRect currentFrame = self.rootViewController.view.frame;
                              self.rootViewController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
+                             self.profileController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
                          }
                          completion:^(BOOL finished) {
                              if (finished) {
@@ -102,20 +117,48 @@
 
 - (void)onTouch:(id)sender {
     [self resetMenu];
-    NSLog(@"%@", sender);
     self.overlay.frame = CGRectMake(self.view.frame.size.width, 0.f, 60.f, self.view.frame.size.height);
 }
 
+- (void)loadProfile {
+    NSLog(@"load profile");
+    [self resetMenu];
+    self.profileController.delegate = self;
 
-- (void)resetMenu
-{
+    [self.view bringSubviewToFront:[self profileView]];
+    
     [UIView animateWithDuration:0.9f
+                          delay:0.0f
+         usingSpringWithDamping:0.9f
+          initialSpringVelocity:10.0f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         CGRect currentFrame = self.rootViewController.view.frame;
+                         self.profileController.view.frame = CGRectOffset(currentFrame,0.0f, 0.0f);
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             self.leftViewVisible = NO;
+                         }
+                     }];
+}
+
+- (void)loadHome {
+    NSLog(@"load home");
+    self.rootViewController.delegate = self;
+    [self.view sendSubviewToBack:[self profileView]];
+    [self resetMenu];
+}
+
+- (void)resetMenu {
+    [UIView animateWithDuration:0.5f
                           delay:0.0f
          usingSpringWithDamping:0.9f
           initialSpringVelocity:0.8f
                         options:UIViewAnimationOptionCurveEaseInOut animations:^{
                             CGRect currentFrame = self.rootViewController.view.frame;
                             self.rootViewController.view.frame = CGRectMake(0.0f, 0.0f, currentFrame.size.width, currentFrame.size.height);
+                            self.profileController.view.frame = CGRectMake(0.0f, 0.0f, currentFrame.size.width, currentFrame.size.height);
                         } completion:^(BOOL finished) {
                             if (finished) {
                                 self.leftViewVisible = NO;

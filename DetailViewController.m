@@ -13,6 +13,7 @@
 #import "Client.h"
 #import "LeftNavViewController.h"
 #import "MenuSliderViewController.h"
+#import "MyProfileViewController.h"
 
 @interface DetailViewController ()
 
@@ -90,7 +91,8 @@
 - (IBAction)onBackButton:(id)sender {
     HomeViewController *homeViewController = [[HomeViewController alloc] init];
     LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
-    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController];
+    MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
+    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
     
     NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
     [vcs insertObject:slidingMenuContainer atIndex:[vcs count]-1];

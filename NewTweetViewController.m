@@ -12,6 +12,7 @@
 #import "MBProgressHUD.h"
 #import "Client.h"
 #import "LeftNavViewController.h"
+#import "MyProfileViewController.h"
 
 @interface NewTweetViewController ()
 
@@ -98,9 +99,14 @@ static int maximumNumCharacters = 140;
         [self.navigationController setViewControllers:vcs animated:NO];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
-        HomeViewController *home = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+
+        HomeViewController *homeViewController = [[HomeViewController alloc] init];
+        LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
+        MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
+
         NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
-        [vcs insertObject:home atIndex:[vcs count]-1];
+        [vcs insertObject:slidingMenuContainer atIndex:[vcs count]-1];
         [self.navigationController setViewControllers:vcs animated:NO];
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -117,7 +123,8 @@ static int maximumNumCharacters = 140;
         
         HomeViewController *homeViewController = [[HomeViewController alloc] init];
         LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
-        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController];
+        MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
         
         homeViewController.theNewTweet = self.textView.text;
         homeViewController.currentTweets = self.savedTweets;

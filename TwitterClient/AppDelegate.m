@@ -13,6 +13,7 @@
 #import "User.h"
 #import "LeftNavViewController.h"
 #import "MenuSliderViewController.h"
+#import "MyProfileViewController.h"
 
 @interface AppDelegate ()
 
@@ -51,7 +52,8 @@
     
     HomeViewController *homeViewController = [[HomeViewController alloc] init];
     LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
-    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController];
+    MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
+    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
     
     
     if ([User currentUser]) {
@@ -74,7 +76,12 @@
 
 - (void)updateRoot:(NSNotification *)notification {
     if ([[notification name] isEqualToString:UserDidLoginNotification]) {
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[HomeViewController alloc] init]];
+        HomeViewController *homeViewController = [[HomeViewController alloc] init];
+        LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
+        MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:slidingMenuContainer];
         self.window.rootViewController = nav;
         nav.navigationBar.hidden = YES;
     } else {
