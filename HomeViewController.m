@@ -26,6 +26,7 @@
 -(void) onFavoriteButton:(id)sender;
 -(void) onRetweetButton:(id)sender;
 -(void) onReplyButton:(id)sender;
+-(void)refresh:(UIRefreshControl *)refreshControl;
 @end
 
 @implementation HomeViewController
@@ -51,7 +52,7 @@
     [self.tweets registerNib:customNib forCellWithReuseIdentifier:@"TweetCell"];
     
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tweets addSubview:refreshControl];
     
     NSLog(@"%@", @"View Load");
@@ -179,6 +180,11 @@
         NSLog(@"%@", error);
         [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
+}
+
+- (void)refresh:(UIRefreshControl *)refreshControl {
+    [refreshControl endRefreshing];
+    [self reload];
 }
 
 - (void) fetchMoreTweets:(NSString *)max_id {
