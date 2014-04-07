@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MenuSliderViewController.h"
 
-@interface MyProfileViewController : UIViewController<MenuProtocol>
+@interface MyProfileViewController : UIViewController<MenuProtocol, UICollectionViewDataSource, UICollectionViewDelegate>
 
 - (IBAction)onLeftNavButton:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UICollectionView *tweetTable;
 
 @end

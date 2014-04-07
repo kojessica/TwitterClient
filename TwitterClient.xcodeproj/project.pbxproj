@@ -41,6 +41,8 @@
 		12993F6A18EE7AA000F79E09 /* MenuSliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12993F6918EE7AA000F79E09 /* MenuSliderViewController.m */; };
 		12993FC318EFCFDB00F79E09 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12993FC118EFCFDB00F79E09 /* MyProfileViewController.m */; };
 		12993FC418EFCFDB00F79E09 /* MyProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12993FC218EFCFDB00F79E09 /* MyProfileViewController.xib */; };
+		12993FCC18F26A8900F79E09 /* ProfileHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 12993FCB18F26A8900F79E09 /* ProfileHeader.m */; };
+		12993FD018F26AB400F79E09 /* ProfileHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12993FCF18F26AB400F79E09 /* ProfileHeader.xib */; };
 		E72E2FB54A1240FA82426F11 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA6AF1F94584358A9C7BC08 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -105,6 +107,9 @@
 		12993FC018EFCFDB00F79E09 /* MyProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyProfileViewController.h; sourceTree = "<group>"; };
 		12993FC118EFCFDB00F79E09 /* MyProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyProfileViewController.m; sourceTree = "<group>"; };
 		12993FC218EFCFDB00F79E09 /* MyProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyProfileViewController.xib; sourceTree = "<group>"; };
+		12993FCA18F26A8900F79E09 /* ProfileHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileHeader.h; sourceTree = "<group>"; };
+		12993FCB18F26A8900F79E09 /* ProfileHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileHeader.m; sourceTree = "<group>"; };
+		12993FCF18F26AB400F79E09 /* ProfileHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeader.xib; sourceTree = "<group>"; };
 		7AA6AF1F94584358A9C7BC08 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8F684574C24D759DAAEA71 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -235,6 +240,9 @@
 				12993FC018EFCFDB00F79E09 /* MyProfileViewController.h */,
 				12993FC118EFCFDB00F79E09 /* MyProfileViewController.m */,
 				12993FC218EFCFDB00F79E09 /* MyProfileViewController.xib */,
+				12993FCA18F26A8900F79E09 /* ProfileHeader.h */,
+				12993FCB18F26A8900F79E09 /* ProfileHeader.m */,
+				12993FCF18F26AB400F79E09 /* ProfileHeader.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -352,6 +360,7 @@
 				12273F8118E62155006CE5D1 /* LoginViewController.xib in Resources */,
 				126B183718E8F5F0005A8475 /* ic_star_outline_grey_8.png in Resources */,
 				12273F8618E6751A006CE5D1 /* HomeViewController.xib in Resources */,
+				12993FD018F26AB400F79E09 /* ProfileHeader.xib in Resources */,
 				12993F6218EE5E9700F79E09 /* hamburger.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,6 +418,7 @@
 				126B182D18E7B03C005A8475 /* DetailViewController.m in Sources */,
 				126B183418E8AF46005A8475 /* Timestamp.m in Sources */,
 				12993FC318EFCFDB00F79E09 /* MyProfileViewController.m in Sources */,
+				12993FCC18F26A8900F79E09 /* ProfileHeader.m in Sources */,
 				12273F8A18E676DC006CE5D1 /* User.m in Sources */,
 				12993F6618EE5F8500F79E09 /* LeftNavViewController.m in Sources */,
 				12993F6A18EE7AA000F79E09 /* MenuSliderViewController.m in Sources */,

@@ -87,6 +87,7 @@
         self.leftViewController.delegate = self;
         
         [self.view sendSubviewToBack:[self leftView]];
+        [self.view bringSubviewToFront:self.overlay];
     
         self.overlay.frame = CGRectMake(self.view.frame.size.width - 60.f, 0.f, 60.f, self.view.frame.size.height);
         
@@ -106,6 +107,14 @@
                              CGRect currentFrame = self.rootViewController.view.frame;
                              self.rootViewController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
                              self.profileController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
+                             
+                             CALayer *layer = self.rootViewController.view.layer;
+                             layer.shadowOffset = CGSizeMake(1, 1);
+                             layer.shadowColor = [[UIColor blackColor] CGColor];
+                             layer.shadowRadius = 4.0f;
+                             layer.shadowOpacity = 0.80f;
+                             layer.shadowPath = [[UIBezierPath bezierPathWithRect:layer.bounds] CGPath];
+                             
                          }
                          completion:^(BOOL finished) {
                              if (finished) {

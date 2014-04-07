@@ -11,7 +11,6 @@
 
 @interface LeftNavViewController : UIViewController<MenuProtocol>
 
-- (IBAction)OnMyProfileLink:(id)sender;
 - (IBAction)OnMyHomeLink:(id)sender;
 - (IBAction)OnSignOutLink:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *fullname;

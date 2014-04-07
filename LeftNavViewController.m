@@ -35,7 +35,7 @@
     [super viewDidLoad];
     NSDictionary *currentUser = [User currentUserDictionary];
     self.fullname.text = [currentUser objectForKey:@"name"];
-    self.screenname.text = [currentUser objectForKey:@"screen_name"];
+    self.screenname.text = [NSString stringWithFormat:@"@%@", [currentUser objectForKey:@"screen_name"]];
     
     
     NSString *biggerImgUrl = [[currentUser objectForKey:@"profile_image_url"] stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
@@ -61,18 +61,18 @@
     UITapGestureRecognizer *tabRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.profileImage addGestureRecognizer:tabRecognizer];
     
+    CALayer * l = [self.profileImage layer];
+    [l setMasksToBounds:YES];
+    [l setCornerRadius:5.0];
+    [self.profileImage.layer setBorderColor: [[UIColor whiteColor] CGColor]];
+    [self.profileImage.layer setBorderWidth: 2.0];
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)OnMyProfileLink:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(loadProfile)]) {
-        [self.delegate loadProfile];
-    }
 }
 
 - (IBAction)OnMyHomeLink:(id)sender {
