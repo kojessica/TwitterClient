@@ -13,6 +13,7 @@
 #import "Client.h"
 #import "LeftNavViewController.h"
 #import "MyProfileViewController.h"
+#import "MentionsViewController.h"
 
 @interface NewTweetViewController ()
 
@@ -103,7 +104,10 @@ static int maximumNumCharacters = 140;
         HomeViewController *homeViewController = [[HomeViewController alloc] init];
         LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
         MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
-        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
+        MentionsViewController *mentionsViewController = [[MentionsViewController alloc] init];
+        
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController mentionsController:mentionsViewController];
+
 
         NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];
         [vcs insertObject:slidingMenuContainer atIndex:[vcs count]-1];
@@ -124,8 +128,10 @@ static int maximumNumCharacters = 140;
         HomeViewController *homeViewController = [[HomeViewController alloc] init];
         LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
         MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
-        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
+        MentionsViewController *mentionsViewController = [[MentionsViewController alloc] init];
         
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController mentionsController:mentionsViewController];
+
         homeViewController.theNewTweet = self.textView.text;
         homeViewController.currentTweets = self.savedTweets;
         NSMutableArray *vcs =  [NSMutableArray arrayWithArray:self.navigationController.viewControllers];

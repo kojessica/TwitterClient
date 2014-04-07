@@ -43,6 +43,8 @@
 		12993FC418EFCFDB00F79E09 /* MyProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12993FC218EFCFDB00F79E09 /* MyProfileViewController.xib */; };
 		12993FCC18F26A8900F79E09 /* ProfileHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 12993FCB18F26A8900F79E09 /* ProfileHeader.m */; };
 		12993FD018F26AB400F79E09 /* ProfileHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12993FCF18F26AB400F79E09 /* ProfileHeader.xib */; };
+		12993FD418F357EE00F79E09 /* MentionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 12993FD218F357EE00F79E09 /* MentionsViewController.m */; };
+		12993FD518F357EE00F79E09 /* MentionsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 12993FD318F357EE00F79E09 /* MentionsViewController.xib */; };
 		E72E2FB54A1240FA82426F11 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AA6AF1F94584358A9C7BC08 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +112,9 @@
 		12993FCA18F26A8900F79E09 /* ProfileHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileHeader.h; sourceTree = "<group>"; };
 		12993FCB18F26A8900F79E09 /* ProfileHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileHeader.m; sourceTree = "<group>"; };
 		12993FCF18F26AB400F79E09 /* ProfileHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeader.xib; sourceTree = "<group>"; };
+		12993FD118F357EE00F79E09 /* MentionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MentionsViewController.h; sourceTree = "<group>"; };
+		12993FD218F357EE00F79E09 /* MentionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MentionsViewController.m; sourceTree = "<group>"; };
+		12993FD318F357EE00F79E09 /* MentionsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MentionsViewController.xib; sourceTree = "<group>"; };
 		7AA6AF1F94584358A9C7BC08 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C8F684574C24D759DAAEA71 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -243,6 +248,9 @@
 				12993FCA18F26A8900F79E09 /* ProfileHeader.h */,
 				12993FCB18F26A8900F79E09 /* ProfileHeader.m */,
 				12993FCF18F26AB400F79E09 /* ProfileHeader.xib */,
+				12993FD118F357EE00F79E09 /* MentionsViewController.h */,
+				12993FD218F357EE00F79E09 /* MentionsViewController.m */,
+				12993FD318F357EE00F79E09 /* MentionsViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -362,6 +370,7 @@
 				12273F8618E6751A006CE5D1 /* HomeViewController.xib in Resources */,
 				12993FD018F26AB400F79E09 /* ProfileHeader.xib in Resources */,
 				12993F6218EE5E9700F79E09 /* hamburger.png in Resources */,
+				12993FD518F357EE00F79E09 /* MentionsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +437,7 @@
 				126B183118E7B199005A8475 /* Tweet.m in Sources */,
 				12273F7B18E62036006CE5D1 /* Client.m in Sources */,
 				12273F9018E68BC6006CE5D1 /* TweetCell.m in Sources */,
+				12993FD418F357EE00F79E09 /* MentionsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

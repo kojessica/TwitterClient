@@ -86,6 +86,12 @@
     [client logout];
 }
 
+- (IBAction)OnMentionsLink:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(loadMentions)]) {
+        [self.delegate loadMentions];
+    }
+}
+
 
 - (void)handleTap:(UITapGestureRecognizer *)recognizer {
     if ([self.delegate respondsToSelector:@selector(loadProfile)]) {

@@ -14,6 +14,7 @@
 #import "LeftNavViewController.h"
 #import "MenuSliderViewController.h"
 #import "MyProfileViewController.h"
+#import "MentionsViewController.h"
 
 @interface AppDelegate ()
 
@@ -53,7 +54,9 @@
     HomeViewController *homeViewController = [[HomeViewController alloc] init];
     LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
     MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
-    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
+    MentionsViewController *mentionsViewController = [[MentionsViewController alloc] init];
+
+    MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController mentionsController:mentionsViewController];
     
     
     if ([User currentUser]) {
@@ -79,7 +82,9 @@
         HomeViewController *homeViewController = [[HomeViewController alloc] init];
         LeftNavViewController *leftMenuViewController = [[LeftNavViewController alloc] init];
         MyProfileViewController *profileViewController = [[MyProfileViewController alloc] init];
-        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController];
+        MentionsViewController *mentionsViewController = [[MentionsViewController alloc] init];
+        
+        MenuSliderViewController *slidingMenuContainer = [[MenuSliderViewController alloc] initWithRootViewController:homeViewController leftViewController:leftMenuViewController profileController:profileViewController mentionsController:mentionsViewController];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:slidingMenuContainer];
         self.window.rootViewController = nav;

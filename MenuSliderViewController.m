@@ -16,22 +16,23 @@
 @property (nonatomic,strong) UIViewController<MenuProtocol> *rootViewController;
 @property (nonatomic,strong) UIViewController<MenuProtocol> *leftViewController;
 @property (nonatomic,strong) UIViewController<MenuProtocol> *profileController;
+@property (nonatomic,strong) UIViewController<MenuProtocol> *mentionsController;
 @property (nonatomic,strong) UIView *overlay;
 @property (nonatomic,assign) BOOL leftViewVisible;
-@property (nonatomic,assign) BOOL profileViewVisible;
 -(void)onTouch:(id)sender;
 
 @end
 
 @implementation MenuSliderViewController
 
-- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController<MenuProtocol> *)leftViewController profileController:(UIViewController<MenuProtocol> *)profileController {
+- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController<MenuProtocol> *)leftViewController profileController:(UIViewController<MenuProtocol> *)profileController mentionsController:(UIViewController<MenuProtocol> *)mentionsController {
     self = [super init];
     
     if (self) {
         _rootViewController = rootViewController;
         _leftViewController = leftViewController;
         _profileController = profileController;
+        _mentionsController = mentionsController;
         _overlay = [[UIView alloc] initWithFrame:CGRectMake(self.view.frame.size.width, 0.f, 60.f, self.view.frame.size.height)];
         [_overlay setBackgroundColor:[UIColor clearColor]];
         [self.view addSubview:_overlay];
@@ -50,6 +51,12 @@
     
     UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragOutLeftView:)];
     [self.rootViewController.view addGestureRecognizer:panRecognizer];
+    
+    UIPanGestureRecognizer *panRecognizerOnProfile = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragOutLeftView:)];
+    [self.profileController.view addGestureRecognizer:panRecognizerOnProfile];
+
+    UIPanGestureRecognizer *panRecognizerOnMentions = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragOutLeftView:)];
+    [self.mentionsController.view addGestureRecognizer:panRecognizerOnMentions];
 }
 
 - (void)dragOutLeftView:(UIPanGestureRecognizer *)recognizer {
@@ -84,6 +91,16 @@
     return self.profileController.view;
 }
 
+- (UIView *)mentionsView {
+    if (![self.rootViewController.childViewControllers containsObject:self.mentionsController]) {
+        [self.view addSubview:self.mentionsController.view];
+        [self addChildViewController:self.mentionsController];
+        [self.mentionsController didMoveToParentViewController:self];
+    }
+    
+    return self.mentionsController.view;
+}
+
 
 - (void)toggleLeftMenu {    
     if (self.leftViewVisible) {
@@ -113,6 +130,7 @@
                              CGRect currentFrame = self.rootViewController.view.frame;
                              self.rootViewController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
                              self.profileController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
+                             self.mentionsController.view.frame = CGRectOffset(currentFrame,(self.view.frame.size.width - 60.0f), 0.0f);
                              
                              CALayer *layer = self.rootViewController.view.layer;
                              layer.shadowOffset = CGSizeMake(1, 1);
@@ -158,10 +176,34 @@
                      }];
 }
 
+- (void)loadMentions {
+    NSLog(@"load mentions");
+    [self resetMenu];
+    self.mentionsController.delegate = self;
+    
+    [self.view bringSubviewToFront:[self mentionsView]];
+    
+    [UIView animateWithDuration:0.9f
+                          delay:0.0f
+         usingSpringWithDamping:0.9f
+          initialSpringVelocity:10.0f
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         CGRect currentFrame = self.rootViewController.view.frame;
+                         self.mentionsController.view.frame = CGRectOffset(currentFrame,0.0f, 0.0f);
+                     }
+                     completion:^(BOOL finished) {
+                         if (finished) {
+                             self.leftViewVisible = NO;
+                         }
+                     }];
+}
+
 - (void)loadHome {
     NSLog(@"load home");
     self.rootViewController.delegate = self;
     [self.view sendSubviewToBack:[self profileView]];
+    [self.view sendSubviewToBack:[self mentionsView]];
     [self resetMenu];
 }
 
@@ -174,6 +216,7 @@
                             CGRect currentFrame = self.rootViewController.view.frame;
                             self.rootViewController.view.frame = CGRectMake(0.0f, 0.0f, currentFrame.size.width, currentFrame.size.height);
                             self.profileController.view.frame = CGRectMake(0.0f, 0.0f, currentFrame.size.width, currentFrame.size.height);
+                            self.mentionsController.view.frame = CGRectMake(0.0f, 0.0f, currentFrame.size.width, currentFrame.size.height);
                         } completion:^(BOOL finished) {
                             if (finished) {
                                 self.leftViewVisible = NO;

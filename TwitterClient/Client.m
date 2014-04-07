@@ -87,4 +87,8 @@ NSString * const twitterConsumerSecret = @"WeHKYymLtobMkuFUMvWp0zFODJmigwDGj0xaa
     return [self GET:@"1.1/users/show.json" parameters:param success:success failure:failure];
 }
 
+- (AFHTTPRequestOperation *)mentionsTimelineWithSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
+    return [self GET:@"1.1/statuses/mentions_timeline.json" parameters:nil success:success failure:failure];
+}
+
 @end

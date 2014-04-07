@@ -14,6 +14,7 @@
 
 - (void)toggleLeftMenu;
 - (void)loadProfile;
+- (void)loadMentions;
 - (void)loadHome;
 - (void)resetMenu;
 
@@ -24,6 +25,6 @@
 
 @interface MenuSliderViewController : UIViewController <MenuProtocol>
 
-- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController<MenuProtocol> *)leftViewController profileController:(UIViewController<MenuProtocol> *)profileController;
+- (instancetype)initWithRootViewController:(UIViewController<MenuProtocol> *)rootViewController leftViewController:(UIViewController<MenuProtocol> *)leftViewController profileController:(UIViewController<MenuProtocol> *)profileController mentionsController:(UIViewController<MenuProtocol> *)mentionsController;
 
 @end
