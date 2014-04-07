@@ -79,5 +79,12 @@ NSString * const twitterConsumerSecret = @"WeHKYymLtobMkuFUMvWp0zFODJmigwDGj0xaa
     return [self GET:@"1.1/statuses/home_timeline.json" parameters:param success:success failure:failure];
 }
 
+- (AFHTTPRequestOperation *)otherUserTimelineWithSuccess:(NSDictionary *)param success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
+    return [self GET:@"1.1/statuses/user_timeline.json" parameters:param success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)getUserProfile:(NSDictionary *)param success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure {
+    return [self GET:@"1.1/users/show.json" parameters:param success:success failure:failure];
+}
 
 @end

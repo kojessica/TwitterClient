@@ -21,6 +21,8 @@
 -(void) onFavoriteButton:(id)sender;
 -(void) onRetweetButton:(id)sender;
 -(void) onReplyButton:(id)sender;
+-(void) loadOtherProfile;
+@property (strong, nonatomic) NSDictionary *currentUser;
 @property (strong, nonatomic) NSMutableArray *currentTweets;
 
 @end
@@ -49,7 +51,15 @@
     UINib *customHeaderNib = [UINib nibWithNibName:@"ProfileHeader" bundle:nil];
     [self.tweetTable registerNib:customHeaderNib forCellWithReuseIdentifier:@"ProfileHeader"];
     
-    [self reload];
+    NSLog(@"%@", self.screenId);
+    
+    if (!self.screenId) {
+        self.currentUser = [User currentUserDictionary];
+        [self reload];
+    } else {
+        [self loadOtherProfile];
+    }
+    
 }
 
 
@@ -80,10 +90,10 @@
     
     if (indexPath.row == 0) {
         ProfileHeader *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"ProfileHeader" forIndexPath:indexPath];
-
-        NSDictionary *currentUser = [User currentUserDictionary];
         
-        NSURL *urlbg = [NSURL URLWithString:[NSString stringWithFormat:@"%@/web", [currentUser objectForKey:@"profile_banner_url"]]];
+        
+        [cell.profileBanner setBackgroundColor:[UIColor blackColor]];
+        NSURL *urlbg = [NSURL URLWithString:[NSString stringWithFormat:@"%@/web", [self.currentUser objectForKey:@"profile_banner_url"]]];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
             NSData *imageDataBG = [NSData dataWithContentsOfURL:urlbg];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -91,7 +101,7 @@
             });
         });
         
-        NSString *biggerImgUrl = [[currentUser objectForKey:@"profile_image_url"] stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
+        NSString *biggerImgUrl = [[self.currentUser objectForKey:@"profile_image_url"] stringByReplacingOccurrencesOfString:@"_normal" withString:@"_bigger"];
         
         NSURL *url = [NSURL URLWithString:biggerImgUrl];
         
@@ -102,12 +112,12 @@
             });
         });
         
-        cell.profileName.text = [currentUser objectForKey:@"name"];
-        cell.screenName.text = [NSString stringWithFormat:@"@%@", [currentUser objectForKey:@"screen_name"]];
-        cell.profileDescription.text = [currentUser objectForKey:@"description"];
-        cell.tweetsTotal.text = [NSString stringWithFormat:@"%@", [currentUser objectForKey:@"statuses_count"]];
-        cell.followerTotal.text = [NSString stringWithFormat:@"%@", [currentUser objectForKey:@"followers_count"]];
-        cell.followingTotal.text = [NSString stringWithFormat:@"%@", [currentUser objectForKey:@"following"]];
+        cell.profileName.text = [self.currentUser objectForKey:@"name"];
+        cell.screenName.text = [NSString stringWithFormat:@"@%@", [self.currentUser objectForKey:@"screen_name"]];
+        cell.profileDescription.text = [self.currentUser objectForKey:@"description"];
+        cell.tweetsTotal.text = [NSString stringWithFormat:@"%@", [self.currentUser objectForKey:@"statuses_count"]];
+        cell.followerTotal.text = [NSString stringWithFormat:@"%@", [self.currentUser objectForKey:@"followers_count"]];
+        cell.followingTotal.text = [NSString stringWithFormat:@"%@", [self.currentUser objectForKey:@"following"]];
         
         CALayer * l = [cell.profileImage layer];
         [l setMasksToBounds:YES];
@@ -240,6 +250,28 @@
     }];
 }
 
+-(void) loadOtherProfile {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    Client *client = [Client instance];
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] initWithObjects:@[self.screenId] forKeys:@[@"screen_name"]];
+
+    [client otherUserTimelineWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.currentTweets = [Tweet tweetsWithArray:responseObject];
+        [self.tweetTable reloadData];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", error);
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    }];
+    
+    [client getUserProfile:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        self.currentUser = responseObject;
+        NSLog(@"%@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"%@", error);
+    }];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -247,8 +279,12 @@
 }
 
 - (IBAction)onLeftNavButton:(id)sender {
-    if ([self.delegate respondsToSelector:@selector(toggleLeftMenu)]) {
-        [self.delegate toggleLeftMenu];
+    if (!self.screenId) {
+        if ([self.delegate respondsToSelector:@selector(toggleLeftMenu)]) {
+            [self.delegate toggleLeftMenu];
+        }
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 @end

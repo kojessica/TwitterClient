@@ -9,8 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "Tweet.h"
 
-@interface TweetCell : UICollectionViewCell
+@class TweetCell;
 
+@protocol TweetCellProtocol <NSObject>
+
+@optional
+-(void)sender:(TweetCell *)sender didTap:(NSString *)tweetId;
+@end
+
+@interface TweetCell : UICollectionViewCell <TweetCellProtocol>
+
+@property (nonatomic,weak) id<TweetCellProtocol>delegate;
 @property (weak, nonatomic) IBOutlet UILabel *tName;
 @property (weak, nonatomic) IBOutlet UIImageView *tImage;
 @property (weak, nonatomic) IBOutlet UILabel *tContent;

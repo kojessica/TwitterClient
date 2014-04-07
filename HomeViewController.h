@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MenuSliderViewController.h"
+#import "TweetCell.h"
 
-@interface HomeViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, MenuProtocol>
+@interface HomeViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegate, MenuProtocol, TweetCellProtocol>
 
-- (IBAction)onLogOutButton:(id)sender;
 - (IBAction)onNewButton:(id)sender;
 @property (strong, nonatomic) NSString *theNewTweet;
 @property (strong, nonatomic) NSMutableArray *currentTweets;

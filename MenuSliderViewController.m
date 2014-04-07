@@ -48,6 +48,15 @@
     [self.rootViewController didMoveToParentViewController:self];
     self.rootViewController.delegate = self;
     
+    UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(dragOutLeftView:)];
+    [self.rootViewController.view addGestureRecognizer:panRecognizer];
+}
+
+- (void)dragOutLeftView:(UIPanGestureRecognizer *)recognizer {
+    if([recognizer state] == UIGestureRecognizerStateBegan)
+    {
+        [self toggleLeftMenu];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -76,10 +85,7 @@
 }
 
 
-- (void)toggleLeftMenu {
-
-    NSLog(@"hello");
-    
+- (void)toggleLeftMenu {    
     if (self.leftViewVisible) {
         self.rootViewController.delegate = self;
         [self resetMenu];

@@ -9,6 +9,13 @@
 #import "TweetCell.h"
 #import "Timestamp.h"
 
+@interface TweetCell()
+
+- (void)didTap:(UITapGestureRecognizer *)gesture;
+@property (strong, nonatomic) NSString *screenId;
+
+@end
+
 @implementation TweetCell
 
 - (id)initWithFrame:(CGRect)frame
@@ -33,6 +40,8 @@
     self.tContent.text = [tweet objectForKey:@"text"];
     self.tName.text = [[tweet objectForKey:@"user"] objectForKey:@"name"];
     [self.tScreenName setText:[NSString stringWithFormat: @"@%@", [[tweet objectForKey:@"user"] objectForKey:@"screen_name"]]];
+    self.screenId = [[tweet objectForKey:@"user"] objectForKey:@"screen_name"];
+    
     
     if ([[tweet objectForKey:@"created_at"] length] != 0) {
         //self.tTime.text = [tweet objectForKey:@"created_at"];
@@ -52,9 +61,17 @@
             self.tImage.image = [UIImage imageWithData:imageData];
         });
     });
+    
+    UITapGestureRecognizer *tabRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTap:)];
+    [self.tImage addGestureRecognizer:tabRecognizer];
+    
     self.tContent.numberOfLines = 0;
     [self.tContent sizeToFit];
     return self;
+}
+
+- (void)didTap:(UITapGestureRecognizer *)gesture {
+    [self.delegate sender:self didTap:self.screenId];
 }
 
 /*

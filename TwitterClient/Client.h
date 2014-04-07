@@ -21,4 +21,6 @@
 - (AFHTTPRequestOperation *)retweetWithSuccess:(NSString *)retweetUrl success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure;
 - (AFHTTPRequestOperation *)destoryRetweetWithSuccess:(NSString *)retweetUrl success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure;
 - (AFHTTPRequestOperation *)nexthomeTimelineWithSuccess:(NSDictionary *)param success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure;
+- (AFHTTPRequestOperation *)otherUserTimelineWithSuccess:(NSDictionary *)param success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure;
+- (AFHTTPRequestOperation *)getUserProfile:(NSDictionary *)param success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error)) failure;
 @end

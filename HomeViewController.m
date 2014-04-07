@@ -16,6 +16,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "User.h"
 #import "MenuSliderViewController.h"
+#import "MyProfileViewController.h"
 
 @interface HomeViewController ()
 
@@ -53,21 +54,14 @@
     [refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     [self.tweets addSubview:refreshControl];
     
-    //NSLog(@"%@", self.currentTweets);
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    
-    //fake the most recent tweet
+    NSLog(@"%@", @"View Load");
     if (self.theNewTweet) {
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         NSMutableDictionary *userDict = [[NSMutableDictionary alloc] init];
         NSDictionary *currentUser = [User currentUserDictionary];
         [userDict setValue:[currentUser objectForKey:@"name"] forKey:@"name"];
         [userDict setValue:[currentUser objectForKey:@"screen_name"] forKey:@"screen_name"];
-
+        
         [userDict setValue:@"" forKey:@"created_at"];
         [userDict setValue:[currentUser objectForKey:@"profile_image_url"] forKey:@"profile_image_url"];
         [dict setValue:self.theNewTweet forKey:@"text"];
@@ -81,6 +75,12 @@
     } else {
         [self reload];
     }
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    NSLog(@"%@", @"View appear");
 }
 
 - (void)didReceiveMemoryWarning
@@ -115,6 +115,13 @@
     return CGSizeMake(320, textRect.size.height + 75);
 }
 
+- (void)sender:(TweetCell *)sender didTap:(NSString *)tweetId {
+    MyProfileViewController *modalViewController = [[MyProfileViewController alloc] init];
+    modalViewController.screenId = tweetId;
+    [self.navigationController presentViewController:modalViewController animated:YES completion:nil];
+    
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     TweetCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"TweetCell" forIndexPath:indexPath];
@@ -135,7 +142,6 @@
         [cell.reTweetButton setTitleColor:[UIColor colorWithRed:244.f/255.f green:180.f/255.f blue:0 alpha:1.f] forState:UIControlStateNormal];
     }
     
-    
     cell.favoriteButton.tag = indexPath.row;
     [cell.favoriteButton addTarget:self action:@selector(onFavoriteButton:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -149,12 +155,9 @@
         [self fetchMoreTweets:[[self.currentTweets objectAtIndex:([self.currentTweets count] - 1)] objectForKey:@"id"]];
     }
     
+    cell.delegate = self;
+    
     return cell;
-}
-
-- (IBAction)onLogOutButton:(id)sender {
-    Client *client = [Client instance];
-    [client logout];
 }
 
 - (IBAction)onNewButton:(id)sender {

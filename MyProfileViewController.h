@@ -14,5 +14,6 @@
 - (IBAction)onLeftNavButton:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UICollectionView *tweetTable;
+@property (strong, nonatomic) NSString *screenId;
 
 @end
