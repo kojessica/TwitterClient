@@ -86,6 +86,13 @@
     }
 }
 
+- (void)sender:(TweetCell *)sender didTap:(NSString *)tweetId {
+    MyProfileViewController *modalViewController = [[MyProfileViewController alloc] init];
+    modalViewController.screenId = tweetId;
+    [self.navigationController presentViewController:modalViewController animated:YES completion:nil];
+    
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.row == 0) {
@@ -158,6 +165,8 @@
         if (indexPath.row == ([self.currentTweets count])) {
             [self fetchMoreTweets:[[self.currentTweets objectAtIndex:([self.currentTweets count] - 1)] objectForKey:@"id"]];
         }
+        
+        cell.delegate = self;
 
         return cell;
     }
@@ -254,22 +263,23 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     Client *client = [Client instance];
     NSMutableDictionary *param = [[NSMutableDictionary alloc] initWithObjects:@[self.screenId] forKeys:@[@"screen_name"]];
-
-    [client otherUserTimelineWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.currentTweets = [Tweet tweetsWithArray:responseObject];
-        [self.tweetTable reloadData];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    [client getUserProfile:param success:^(AFHTTPRequestOperation *operation, id responseUserObject) {
+        self.currentUser = responseUserObject;
+        
+        [client otherUserTimelineWithSuccess:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            self.currentTweets = [Tweet tweetsWithArray:responseObject];
+            [self.tweetTable reloadData];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"%@", error);
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        }];
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
     }];
     
-    [client getUserProfile:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        self.currentUser = responseObject;
-        NSLog(@"%@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"%@", error);
-    }];
 }
 
 - (void)didReceiveMemoryWarning

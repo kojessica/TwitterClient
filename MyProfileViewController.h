@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "MenuSliderViewController.h"
+#import "TweetCell.h"
 
-@interface MyProfileViewController : UIViewController<MenuProtocol, UICollectionViewDataSource, UICollectionViewDelegate>
+@interface MyProfileViewController : UIViewController<MenuProtocol, UICollectionViewDataSource, UICollectionViewDelegate, TweetCellProtocol>
 
 - (IBAction)onLeftNavButton:(id)sender;
 
